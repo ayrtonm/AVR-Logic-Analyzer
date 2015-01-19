@@ -162,10 +162,10 @@ section at the end of this file).
  * proceed, do a return after doing your things. One possible application
  * (besides debugging) is to flash a status LED on each packet.
  */
-#define USB_RESET_HOOK(resetStarts)     if(!resetStarts){hadUsbReset();}
 #ifndef __ASSEMBLER__
-extern void hadUsbReset(void);
+extern void hadUsbReset(void); // define the function for usbdrv.c
 #endif
+#define USB_RESET_HOOK(resetStarts)     if(!resetStarts){hadUsbReset();}
 /* This macro is a hook if you need to know when an USB RESET occurs. It has
  * one parameter which distinguishes between the start of RESET state and its
  * end.
@@ -376,7 +376,7 @@ extern void hadUsbReset(void);
  * interrupt than INT0, you may have to define some of these.
  */
  #define USB_INTR_CFG            PCMSK//MCUCR */
- #define USB_INTR_CFG_SET        (1 << USB_CFG_DPLUS_BIT)//((1 << ISC00) | (1 << ISC01)) */
+ #define USB_INTR_CFG_SET        (1 << PCINT3)//((1 << ISC00) | (1 << ISC01)) */
  #define USB_INTR_CFG_CLR        0// */
  #define USB_INTR_ENABLE         GIMSK// */
  #define USB_INTR_ENABLE_BIT     PCIE//INT0 */

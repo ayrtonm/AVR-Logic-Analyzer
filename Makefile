@@ -2,7 +2,7 @@ DEVICE     = attiny85
 CLOCK      = 16500000
 PROGRAMMER = -c usbtiny
 OBJECTS    = main.o shift.o usbdrv/usbdrv.o usbdrv/oddebug.o usbdrv/usbdrvasm.o
-FUSES      = -U lfuse:w:0xe1:m -U hfuse:w:0xdd:m -U efuse:w:0xff:m
+FUSES      = -u -U lfuse:w:0xe1:m -U hfuse:w:0xdd:m -U efuse:w:0xff:m
  
 AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)
 COMPILE = avr-gcc -Wall -Os -DF_CPU=$(CLOCK) -mmcu=$(DEVICE)

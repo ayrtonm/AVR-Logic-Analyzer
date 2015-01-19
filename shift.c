@@ -4,7 +4,7 @@
 #define PL 1
 #define Q7 2
 #define CP 0
-#define DELAY 10
+#define DELAY 1
 #define SET_IN(BIT) DDRB &= ~(1<<BIT)
 #define SET_OUT(BIT) DDRB |= (1<<BIT)
 #define SETB(BIT) PORTB |= (1<<BIT)

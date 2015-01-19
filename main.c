@@ -8,7 +8,7 @@
 
 
 USB_PUBLIC uint8_t usbFunctionSetup(uint8_t data[8])
-{
+{/*
   usbRequest_t *rq = (void *)data;
   switch(rq->bRequest)
   {
@@ -20,7 +20,7 @@ USB_PUBLIC uint8_t usbFunctionSetup(uint8_t data[8])
       return 0;
     }
   }
-  //should not get here
+  //should not get here*/
   return 0;
 }
 
@@ -30,7 +30,7 @@ USB_PUBLIC uint8_t usbFunctionSetup(uint8_t data[8])
 void hadUsbReset() {
     int frameLength, targetLength = (unsigned)(1499 * (double)F_CPU / 10.5e6 + 0.5);
     int bestDeviation = 9999;
-    uchar trialCal, bestCal, step, region;
+    uint8_t trialCal, bestCal, step, region;
 
     // do a binary search in regions 0-127 and 128-255 to get optimum OSCCAL
     for(region = 0; region <= 1; region++) {
@@ -39,10 +39,13 @@ void hadUsbReset() {
         
         for(step = 64; step > 0; step >>= 1) { 
             if(frameLength < targetLength) // true for initial iteration
+            {
                 trialCal += step; // frequency too low
+            }
             else
+            {
                 trialCal -= step; // frequency too high
-                
+            }   
             OSCCAL = trialCal;
             frameLength = usbMeasureFrameLength();
             
@@ -52,15 +55,13 @@ void hadUsbReset() {
             }
         }
     }
-
     OSCCAL = bestCal;
 }
 
 int main()
 {
   uint8_t i;
-  setup_shift();
-  wdt_enable(6);
+  wdt_enable(WDTO_1S);
   usbInit();
   usbDeviceDisconnect();
   for(i = 0; i < 250; i++)
