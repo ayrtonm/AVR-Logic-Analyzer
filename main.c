@@ -5,22 +5,33 @@
 #include <stdint.h>
 #include "shift.h"
 #include "usbdrv/usbdrv.h"
-
+#define READ_BITS 0
+#define USB_IN 1
 
 USB_PUBLIC uint8_t usbFunctionSetup(uint8_t data[8])
-{/*
+{
   usbRequest_t *rq = (void *)data;
   switch(rq->bRequest)
   {
-    //read 16 bit value
-    case 0:
+    //read 16-bits from shift register
+    case READ_BITS:
     {
       parallel_in();
-      uint16_t x = serial_out();
+      temp_read = serial_out();
+	  shift_data[0] = (temp_read & 0x00ff);
+	  shift_data[1] = (temp_read >> 8);
       return 0;
     }
+	//send data to pc
+	case USB_IN:
+	{
+	  //usb msg pointer now points to shift register data
+	  usbMsgPtr = shift_data;
+	  //return size of shift register data
+	  return sizeof(shift_data);
+	}
   }
-  //should not get here*/
+  //should not get here
   return 0;
 }
 
@@ -61,6 +72,8 @@ void hadUsbReset() {
 int main()
 {
   uint8_t i;
+  uint16_t temp_read;
+  static uint8_t shift_data[2] = {0,0};
   wdt_enable(WDTO_1S);
   usbInit();
   usbDeviceDisconnect();

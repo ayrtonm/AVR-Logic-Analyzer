@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <usb.h>
+#define READ_BITS
+#define USB_IN 1
 
 /* Used to get descriptor strings for device identification */
 static int usbGetDescriptorString(usb_dev_handle *dev, int index, int langid, 
@@ -104,6 +106,9 @@ int main(int argc, char **argv)
     exit(1);
   }
   printf("usb device successfully opened!\n");
+  usb_control_msg(handle,USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_IN,READ_BITS, 0, 0, (char *)buffer, sizeof(buffer),5000);
+  nBytes = usb_control_msg(handle,USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_IN,USB_IN, 0, 0, (char *)buffer, sizeof(buffer),5000);
+  printf("Got %d bytes: %sn\n", nBytes, buffer);
   usb_close(handle);
   return 0;
 }

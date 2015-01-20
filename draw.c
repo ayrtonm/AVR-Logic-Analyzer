@@ -1,11 +1,11 @@
 #include <SDL/SDL.h>
-#define YSCALE 16
-#define H_WIDTH 4
-#define Y_WIDTH 1
-#define YOFFSET 4
-#define SCREENX 256
-#define SCREENY 256
-#define MAX_SPEED 100
+#define SCALE_Y 16
+#define LINE_LENGTH 4
+#define LINE_WIDTH 1
+#define OFFSET 4
+#define SCREEN_WIDTH 256
+#define SCREEN_HEIGHT 256
+#define MIN_DELAY 100
 #define MIN_SPEED 100000
 
 typedef unsigned char uint8;
@@ -19,16 +19,16 @@ int main(int argc, char *argv[])
   }
   SDL_Init(SDL_INIT_EVERYTHING);
   SDL_Surface *disp,*buffer;
-  disp = SDL_SetVideoMode(SCREENX,SCREENY,32,SDL_HWSURFACE);
-  buffer = SDL_CreateRGBSurface(SDL_HWSURFACE,SCREENX,SCREENY,32,0,0,0,0);
+  disp = SDL_SetVideoMode(SCREEN_WIDTH,SCREEN_HEIGHT,32,SDL_HWSURFACE);
+  buffer = SDL_CreateRGBSurface(SDL_HWSURFACE,SCREEN_WIDTH,SCREEN_HEIGHT,32,0,0,0,0);
   SDL_WM_SetCaption("Digital Logic Analyzer",NULL);
   int i,j,quit = 0;
   int delay = 1000;
   uint8 data[2] = {0,0};
   uint8 bit;
   SDL_Event event;
-  SDL_Rect screen_src = {0,0,SCREENX-H_WIDTH,SCREENY};
-  SDL_Rect screen_dst = {H_WIDTH,0,SCREENX-H_WIDTH,SCREENY};
+  SDL_Rect screen_src = {0,0,SCREEN_WIDTH-LINE_LENGTH,SCREEN_HEIGHT};
+  SDL_Rect screen_dst = {LINE_LENGTH,0,SCREEN_WIDTH-LINE_LENGTH,SCREEN_HEIGHT};
   for(;;)
   {
     //copy display to buffer
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
         //draw new bits on display
         bit = data[j] & (1 << i);
         //make horizontal line
-        SDL_Rect dst = {0,bit ? (j*8+i)*YSCALE+YOFFSET : (j*8+i-.5)*YSCALE+YOFFSET,H_WIDTH,1};
+        SDL_Rect dst = {0,bit ? (j*8+i)*SCALE_Y+OFFSET : (j*8+i-.5)*SCALE_Y+OFFSET,LINE_LENGTH,LINE_WIDTH};
         SDL_FillRect(disp,&dst,SDL_MapRGB(disp->format,0x00,0xff,0x00));
       }
     }
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
         {
           switch(event.key.keysym.sym)
           {
-            case SDLK_e: {delay = (delay == MAX_SPEED ? delay : delay - 100);break;}
+            case SDLK_e: {delay = (delay == MIN_DELAY ? delay : delay - 100);break;}
             case SDLK_d: {delay = (delay == MIN_SPEED ? delay : delay + 100);break;}
             case SDLK_q: {quit = 1;break;}
           }
