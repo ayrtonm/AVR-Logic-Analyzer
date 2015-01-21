@@ -18,7 +18,7 @@ void setup_shift()
   SETB(PL);
   CLEARB(CP);
   //set pull up resistor maybe necessary?
-  //SETB(Q7);
+  SETB(Q7);
 }
 
 void parallel_in()
@@ -31,7 +31,7 @@ void parallel_in()
 uint16_t serial_out()
 {
   uint16_t i,bit,word;
-  word = 0;
+  word = 0x0000;
   for (i = 0; i < 16; i++)
   {
     CLEARB(CP);

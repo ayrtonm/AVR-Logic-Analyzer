@@ -117,7 +117,7 @@ int main(int argc, char **argv)
   for(;;)
   {
     nBytes = usb_control_msg(handle,USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_IN,READ_BITS, 0, 0, (char *)shift_buffer, sizeof(shift_buffer),5000);
-    //printf("Got %d bytes: %x %x\n", nBytes, shift_buffer[0],shift_buffer[1]);
+    printf("Got %d bytes: %x %x\n", nBytes, shift_buffer[0],shift_buffer[1]);
     redraw_screen(shift_buffer);
     if(process_keypresses()) break;
   }

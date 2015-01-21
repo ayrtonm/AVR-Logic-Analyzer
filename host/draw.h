@@ -3,7 +3,7 @@
 #include <SDL/SDL.h>
 
 //all other size macros are written in terms of scale macros
-#define SCALE 8
+#define SCALE 6
 #define SCALE_Y 4*SCALE
 #define LINE_LENGTH SCALE
 #define LINE_WIDTH (SCALE/4)
