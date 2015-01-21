@@ -30,7 +30,7 @@ load: all
 	bootloadHID main.hex
  
 clean:
-	rm -f main.hex main.elf $(OBJECTS) host draw
+	rm -f main.hex main.elf $(OBJECTS)
  
 main.elf: $(OBJECTS)
 	$(COMPILE) -o main.elf $(OBJECTS)
@@ -45,5 +45,3 @@ disasm:	main.elf
 cpp:
 	$(COMPILE) -E main.c
 
-host:
-	gcc host.c draw.c -o shift_host -lusb -lSDL
