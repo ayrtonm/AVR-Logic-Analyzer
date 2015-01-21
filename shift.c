@@ -38,7 +38,7 @@ uint16_t serial_out()
     _delay_ms(DELAY);
     SETB(CP);
     _delay_ms(DELAY);
-    bit = PINB & (1<<Q7);
+    bit = (PINB & (1<<Q7))>>Q7;
     word |= (bit << i);
   }
   return word;

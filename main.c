@@ -6,7 +6,7 @@
 #include "shift.h"
 #include "usbdrv/usbdrv.h"
 #define READ_BITS 0
-#define USB_IN 1
+
 
 USB_PUBLIC uint8_t usbFunctionSetup(uint8_t data[8])
 {
@@ -17,19 +17,18 @@ USB_PUBLIC uint8_t usbFunctionSetup(uint8_t data[8])
     case READ_BITS:
     {
       parallel_in();
+      _delay_ms(10);
+      static uint16_t temp_read;
       temp_read = serial_out();
-	  shift_data[0] = (temp_read & 0x00ff);
-	  shift_data[1] = (temp_read >> 8);
-      return 0;
+      _delay_ms(10);
+      static uint8_t shift_data[2] = {0,0};
+	    shift_data[0] = (temp_read & 0x00ff);
+	    shift_data[1] = (temp_read >> 8);
+      //usb msg pointer now points to shift register data
+	    usbMsgPtr = shift_data;
+	    //return size of shift register data
+	    return sizeof(shift_data);
     }
-	//send data to pc
-	case USB_IN:
-	{
-	  //usb msg pointer now points to shift register data
-	  usbMsgPtr = shift_data;
-	  //return size of shift register data
-	  return sizeof(shift_data);
-	}
   }
   //should not get here
   return 0;
@@ -72,8 +71,7 @@ void hadUsbReset() {
 int main()
 {
   uint8_t i;
-  uint16_t temp_read;
-  static uint8_t shift_data[2] = {0,0};
+  setup_shift();
   wdt_enable(WDTO_1S);
   usbInit();
   usbDeviceDisconnect();

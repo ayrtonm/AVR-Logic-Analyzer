@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <usb.h>
-#define READ_BITS
-#define USB_IN 1
+#include "draw.h"
+#define READ_BITS 0
 
 /* Used to get descriptor strings for device identification */
 static int usbGetDescriptorString(usb_dev_handle *dev, int index, int langid, 
@@ -98,7 +98,15 @@ static usb_dev_handle * usbOpenDevice(int vendor, char *vendorName,
 
 int main(int argc, char **argv)
 {
+  if (argc == 2)
+  {
+    printf("Digital Logic Analyzer\npress e to increase scrolling speed\npress d to decrease scrolling speed\npress q to quit\n");
+    return 0;
+  }
+  init_draw();
   usb_dev_handle *handle = NULL;
+  int nBytes;
+  unsigned char shift_buffer[256];
   handle = usbOpenDevice(0x16c0,"ayrton",0x05DC,"shiftregister");
   if (handle == NULL)
   {
@@ -106,9 +114,13 @@ int main(int argc, char **argv)
     exit(1);
   }
   printf("usb device successfully opened!\n");
-  usb_control_msg(handle,USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_IN,READ_BITS, 0, 0, (char *)buffer, sizeof(buffer),5000);
-  nBytes = usb_control_msg(handle,USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_IN,USB_IN, 0, 0, (char *)buffer, sizeof(buffer),5000);
-  printf("Got %d bytes: %sn\n", nBytes, buffer);
+  for(;;)
+  {
+    nBytes = usb_control_msg(handle,USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_IN,READ_BITS, 0, 0, (char *)shift_buffer, sizeof(shift_buffer),5000);
+    printf("Got %d bytes: %x %x\n", nBytes, shift_buffer[0],shift_buffer[1]);
+    redraw_screen(shift_buffer);
+    if(process_keypresses()) break;
+  }
   usb_close(handle);
   return 0;
 }
