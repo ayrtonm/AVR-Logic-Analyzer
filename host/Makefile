@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = #-g -O3
+CFLAGS = -O3
 SRCS = host.c draw.c
 OBJS = $(SRCS:.c=.o)
 LIBS = -lSDL -lusb

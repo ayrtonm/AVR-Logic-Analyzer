@@ -5,7 +5,7 @@ OBJECTS    = main.o shift.o usbdrv/usbdrv.o usbdrv/oddebug.o usbdrv/usbdrvasm.o
 FUSES      = -u -U lfuse:w:0xe1:m -U hfuse:w:0xdd:m -U efuse:w:0xff:m
  
 AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)
-COMPILE = avr-gcc -Wall -Os -DF_CPU=$(CLOCK) -mmcu=$(DEVICE)
+COMPILE = avr-gcc -Wall -O3 -DF_CPU=$(CLOCK) -mmcu=$(DEVICE)
  
 all:	main.hex
  

@@ -24,7 +24,7 @@ void setup_shift()
 void parallel_in()
 {
   CLEARB(PL);
-  _delay_ms(DELAY);
+  //_delay_ms(DELAY);
   SETB(PL);
 }
 
@@ -35,9 +35,9 @@ uint16_t serial_out()
   for (i = 0; i < 16; i++)
   {
     CLEARB(CP);
-    _delay_ms(DELAY);
+    //_delay_ms(DELAY);
     SETB(CP);
-    _delay_ms(DELAY);
+    //_delay_ms(DELAY);
     bit = (PINB & (1<<Q7))>>Q7;
     word |= (bit << i);
   }

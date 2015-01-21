@@ -375,13 +375,13 @@ extern void hadUsbReset(void); // define the function for usbdrv.c
  * which is not fully supported (such as IAR C) or if you use a differnt
  * interrupt than INT0, you may have to define some of these.
  */
- #define USB_INTR_CFG            PCMSK//MCUCR */
- #define USB_INTR_CFG_SET        (1 << PCINT3)//((1 << ISC00) | (1 << ISC01)) */
- #define USB_INTR_CFG_CLR        0// */
- #define USB_INTR_ENABLE         GIMSK// */
- #define USB_INTR_ENABLE_BIT     PCIE//INT0 */
- #define USB_INTR_PENDING        GIFR// */
- #define USB_INTR_PENDING_BIT    PCIF//INTF0 */
- #define USB_INTR_VECTOR         PCINT0_vect//INT0_vect */
+ #define USB_INTR_CFG            PCMSK
+ #define USB_INTR_CFG_SET        (1 << PCINT3)
+ #define USB_INTR_CFG_CLR        0
+ #define USB_INTR_ENABLE         GIMSK
+ #define USB_INTR_ENABLE_BIT     PCIE
+ #define USB_INTR_PENDING        GIFR
+ #define USB_INTR_PENDING_BIT    PCIF
+ #define USB_INTR_VECTOR         PCINT0_vect
 
 #endif /* __usbconfig_h_included__ */

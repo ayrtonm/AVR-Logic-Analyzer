@@ -17,10 +17,10 @@ USB_PUBLIC uint8_t usbFunctionSetup(uint8_t data[8])
     case READ_BITS:
     {
       parallel_in();
-      _delay_ms(10);
+      //_delay_ms(10);
       static uint16_t temp_read;
       temp_read = serial_out();
-      _delay_ms(10);
+      //_delay_ms(10);
       static uint8_t shift_data[2] = {0,0};
 	    shift_data[0] = (temp_read & 0x00ff);
 	    shift_data[1] = (temp_read >> 8);
