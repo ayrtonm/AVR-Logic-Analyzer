@@ -6,7 +6,7 @@ LIBS = -lSDL -lusb
 MAIN = main
 
 all: $(MAIN)
-	@echo emulator has been compiled
+	@echo main has been compiled
 $(MAIN): $(OBJS)
 	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(MAIN)
 .c.o:
