@@ -3,12 +3,12 @@
 #include <SDL/SDL.h>
 
 //all other size macros are written in terms of scale macros
-#define SCALE 6
+#define SCALE 4
 #define SCALE_Y 4*SCALE
 #define LINE_LENGTH SCALE
 #define LINE_WIDTH (SCALE/4)
 #define OFFSET SCALE
-#define SCREEN_WIDTH 64*SCALE
+#define SCREEN_WIDTH SCALE*256//*64
 #define SCREEN_HEIGHT 64*SCALE
 
 #define MIN_DELAY 100

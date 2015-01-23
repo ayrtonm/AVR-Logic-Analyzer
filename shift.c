@@ -17,14 +17,14 @@ void setup_shift()
   SET_OUT(CP);
   SETB(PL);
   CLEARB(CP);
-  //set pull up resistor maybe necessary?
+  //set pull up resistor
   SETB(Q7);
 }
 
 void parallel_in()
 {
   CLEARB(PL);
-  //_delay_ms(DELAY);
+  _delay_us(DELAY);
   SETB(PL);
 }
 
@@ -35,9 +35,9 @@ uint16_t serial_out()
   for (i = 0; i < 16; i++)
   {
     CLEARB(CP);
-    //_delay_ms(DELAY);
+    _delay_us(DELAY);
     SETB(CP);
-    //_delay_ms(DELAY);
+    _delay_us(DELAY);
     bit = (PINB & (1<<Q7))>>Q7;
     word |= (bit << i);
   }
