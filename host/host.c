@@ -2,6 +2,9 @@
 #include <usb.h>
 #include "draw.h"
 #define READ_BITS 0
+#define MIN(a,b) (a > b ? b : a)
+#define MAX(a,b) (a > b ? a : b)
+#define POW_10(x) (x == 1 ? 10 : x == 2 ? 100 : x == 3 ? 1000 : x == 4 ? 10000 : 100)
 
 /* Used to get descriptor strings for device identification */
 static int usbGetDescriptorString(usb_dev_handle *dev, int index, int langid, 
@@ -106,18 +109,23 @@ int main(int argc, char **argv)
   init_draw();
   usb_dev_handle *handle = NULL;
   int nBytes;
-  unsigned char shift_buffer[256];
+  unsigned char shift_buffer[4];//maybe needs to be 256 since V-USB transmitts 256 bytes at a time?
   handle = usbOpenDevice(0x16c0,"ayrton",0x05DC,"shiftregister");
   if (handle == NULL)
   {
     fprintf(stderr,"Could not find USB device\n");
     exit(1);
   }
+  int t = 0;
   for(;;)
   {
+    shift_buffer[2] = shift_buffer[0];
+    shift_buffer[3] = shift_buffer[1];
     nBytes = usb_control_msg(handle,USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_IN,READ_BITS, 0, 0, (char *)shift_buffer, sizeof(shift_buffer),5000);
-    redraw_screen(shift_buffer);
+    if (!(paused)) redraw_screen(shift_buffer);
     if(process_keypresses()) break;
+    if (k_up) draw_delay = MIN(draw_delay+POW_10(step),MAX_DELAY);
+    if (k_down) draw_delay = MAX(draw_delay-POW_10(step),MIN_DELAY);
   }
   usb_close(handle);
   return 0;

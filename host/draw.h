@@ -3,15 +3,19 @@
 #include <SDL/SDL.h>
 
 //all other size macros are written in terms of scale macros
-#define SCALE 4
+#define SCALE 8
 #define SCALE_Y 4*SCALE
 #define LINE_LENGTH SCALE
 #define LINE_WIDTH (SCALE/4)
 #define OFFSET SCALE
+
+#define X_LINES (SCREEN_WIDTH/32)
+#define Y_LINES (SCREEN_HEIGHT/32)
+
 #define SCREEN_WIDTH SCALE*64
 #define SCREEN_HEIGHT 64*SCALE
 
-#define MIN_DELAY 100
+#define MIN_DELAY 10
 #define MAX_DELAY 100000
 
 typedef unsigned char uint8;
@@ -29,7 +33,7 @@ SDL_Rect screen_src;
 SDL_Rect screen_dst;
 
 //variables
-int not_running;
-int draw_delay;
+int k_down,k_up;
+int not_running, paused, draw_delay,step;
 
 #endif
