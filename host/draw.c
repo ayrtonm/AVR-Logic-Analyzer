@@ -22,7 +22,8 @@ void init_draw(void)
   k_up = 0;
   paused = 0;
   step = 1;
-  draw_delay = 1000;
+  t = 0;
+  draw_delay = MAX_DELAY;
 }
 void redraw_screen(char *shift_buffer)
 {
@@ -31,6 +32,8 @@ void redraw_screen(char *shift_buffer)
   SDL_BlitSurface(disp,NULL,buffer,NULL);
   //clear display
   SDL_FillRect(disp,NULL,0x000000);
+  t++;
+  if (t == FULL_SCREEN) {SDL_FillRect(buffer,NULL,0x000000);t = 0;}
   /*
   for (i = 0; i < 8; i++)
   {
@@ -58,13 +61,12 @@ void redraw_screen(char *shift_buffer)
         SDL_Rect vert = {LINE_LENGTH-1,(j*8+i-.5)*SCALE_Y+OFFSET,LINE_WIDTH,.5*SCALE_Y};
         if (i < 4) {j ? SDL_FillRect(disp,&vert,SDL_MapRGB(disp->format,0x00,0xff,0x00)) : SDL_FillRect(disp,&vert,SDL_MapRGB(disp->format,0xff,0xff,0x00));}
         else {j ? SDL_FillRect(disp,&vert,SDL_MapRGB(disp->format,0x00,0x00,0xff)) : SDL_FillRect(disp,&vert,SDL_MapRGB(disp->format,0xff,0x00,0x00));}
-	  }
+      }
     }
   }
   //copy buffer to display
   SDL_BlitSurface(buffer,&screen_src,disp,&screen_dst);
-  SDL_Flip(disp);
-  usleep(draw_delay);
+  if (t == FULL_SCREEN - 1) {SDL_Flip(disp);usleep(draw_delay);}
 }
 int process_keypresses(void)
 {

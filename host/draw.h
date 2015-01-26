@@ -7,13 +7,15 @@
 #define SCALE_Y 4*SCALE
 #define LINE_LENGTH SCALE
 #define LINE_WIDTH (SCALE/4)
-#define OFFSET SCALE
+#define OFFSET SCALE*3
+
+#define FULL_SCREEN (SCREEN_WIDTH/LINE_LENGTH)
 
 #define X_LINES (SCREEN_WIDTH/32)
 #define Y_LINES (SCREEN_HEIGHT/32)
 
 #define SCREEN_WIDTH SCALE*64
-#define SCREEN_HEIGHT 64*SCALE
+#define SCREEN_HEIGHT 68*SCALE
 
 #define MIN_DELAY 10
 #define MAX_DELAY 100000
@@ -34,6 +36,7 @@ SDL_Rect screen_dst;
 
 //variables
 int k_down,k_up;
+int t;
 int not_running, paused, draw_delay,step;
 
 #endif
