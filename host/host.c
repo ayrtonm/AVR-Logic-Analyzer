@@ -126,6 +126,7 @@ int main(int argc, char **argv)
     if(process_keypresses()) break;
     if (k_up) draw_delay = MIN(draw_delay+POW_10(step),MAX_DELAY);
     if (k_down) draw_delay = MAX(draw_delay-POW_10(step),MIN_DELAY);
+    usleep(100);
   }
   usb_close(handle);
   return 0;

@@ -52,7 +52,7 @@ void redraw_screen(char *shift_buffer)
       //old bit
       old_bit = shift_buffer[j+2] & (1 << i);
       //make horizontal line
-      SDL_Rect dst = {0,bit ? (j*8+i)*SCALE_Y+OFFSET : (j*8+i-.5)*SCALE_Y+OFFSET,LINE_LENGTH,LINE_WIDTH};
+      SDL_Rect dst = {0,bit ? (j*8+i-.5)*SCALE_Y+OFFSET : (j*8+i)*SCALE_Y+OFFSET,LINE_LENGTH,LINE_WIDTH};
       if (i < 4) {j ? SDL_FillRect(disp,&dst,SDL_MapRGB(disp->format,0x00,0xff,0x00)) : SDL_FillRect(disp,&dst,SDL_MapRGB(disp->format,0xff,0xff,0x00));}
       else {j ? SDL_FillRect(disp,&dst,SDL_MapRGB(disp->format,0x00,0x00,0xff)) : SDL_FillRect(disp,&dst,SDL_MapRGB(disp->format,0xff,0x00,0x00));}
       //if bit changed
